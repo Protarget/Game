@@ -1,5 +1,5 @@
 -- System: render/scaled
--- Entity Description: Wrap the game rendering in order to scale it appropriately
+-- System Description: Wrap the game rendering in order to scale it appropriately
 
 local rawBuffer = nil
 local debug = require("systems/render/debug")

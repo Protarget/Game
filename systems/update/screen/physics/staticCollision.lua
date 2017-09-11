@@ -13,10 +13,11 @@ local vector = require("utilities/vector")
 -- Returns:
 --  1 (boolean): Whether or not the object collided with anything
 --  2 (vector): The expulsion vector for the collision
-return function(object, collision, dt)
+return function(object, collision, dt, noResponse)
     local bbox = rectangle.offset(object.boundingBox, object.position)
     for index, collision in ipairs(collision) do
         if (rectangle.overlaps(collision, bbox)) then
+            if (noResponse) then return true, {0, 0} end
             local expulsion = rectangle.expel(collision, bbox)
             object.position = vector.add(object.position, expulsion)
             return true, expulsion

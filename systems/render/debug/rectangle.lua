@@ -1,5 +1,5 @@
 -- System: render/debug/rectangle
--- Entity Description: Render a debug display for a rectangle
+-- System Description: Render a debug display for a rectangle
 
 local rectangle = require("utilities/rectangle")
 

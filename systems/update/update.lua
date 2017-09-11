@@ -2,6 +2,7 @@
 -- System Description: Update an entire game
 
 local screenUpdate = require("systems/update/screen")
+local transitionUpdate = require("systems/update/transition")
 
 -- Function: Apply updates to a game
 -- Arguments:
@@ -9,4 +10,5 @@ local screenUpdate = require("systems/update/screen")
 --  dt (number): The delta-time for this frame
 return function(game, dt)
     screenUpdate(game.screen, dt)
+    transitionUpdate(game)
 end

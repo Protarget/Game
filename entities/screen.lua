@@ -4,6 +4,7 @@
 return function()
     return {
         player = nil,
-        staticCollision = {}
+        staticCollision = {},
+        ladders = {}
     }
 end

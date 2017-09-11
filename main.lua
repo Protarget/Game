@@ -10,14 +10,43 @@ local HEIGHT = 96
 local SCALE_FACTOR = 4
 
 testGame = game()
-testGame.screen = screen()
-testGame.screen.player = player()
-testGame.screen.player.position = {45, 25}
-testGame.screen.staticCollision = {
-    {10, 75, 96, 96},
+
+local testPlayer = player()
+testPlayer.position = {45, 25}
+
+local testScreen = screen()
+testScreen.staticCollision = {
+    {0, 75, 96, 96},
     {75, 0, 96, 96},
     {60, 50, 70, 60}
 }
+testScreen.ladders = {
+    {30, 0, 40, 100}
+}
+
+local testScreenLeft = screen()
+testScreenLeft.staticCollision = {
+    {0, 75, 96, 96}
+}
+
+local testScreenUp = screen()
+testScreenUp.staticCollision = {
+    {50, 50, 96, 60}
+}
+testScreenUp.ladders = {
+    {30, 10, 40, 100}
+}
+
+
+testGame.screens = {
+    ["0,0"] = testScreen,
+    ["-1,0"] = testScreenLeft,
+    ["0,-1"] = testScreenUp
+}
+
+
+testGame.screen = testGame.screens["0,0"]
+testGame.screen.player = testPlayer
 
 function love.load()
     love.window.setMode(WIDTH * SCALE_FACTOR, HEIGHT * SCALE_FACTOR)

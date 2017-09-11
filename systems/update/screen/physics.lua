@@ -5,16 +5,26 @@ local movement = require("systems/update/screen/physics/movement")
 local staticCollision = require("systems/update/screen/physics/staticCollision")
 local gravity = require("systems/update/screen/physics/gravity")
 
--- Function: Apply physics to a screen's player
+-- Function: Apply the player's movement and collision, but not anything else
 -- Arguments:
 --  screen (screen): The screen to apply physics to
 --  dt (number): The delta-time for this frame
-function playerUpdate(screen, dt)
+function applyPlayerMovementAndCollision(screen, dt)
     movement(screen.player, 1, dt)
     local xCollide, xVector = staticCollision(screen.player, screen.staticCollision, dt)
 
     movement(screen.player, 2, dt)
     local yCollide, yVector = staticCollision(screen.player, screen.staticCollision, dt)
+
+    return xCollide, xVector, yCollide, yVector
+end
+
+-- Function: Apply standard platformer physics to a screen's player
+-- Arguments:
+--  screen (screen): The screen to apply physics to
+--  dt (number): The delta-time for this frame
+function playerUpdateStandard(screen, dt)
+    local xCollide, xVector, yCollide, yVector = applyPlayerMovementAndCollision(screen, dt)
 
     if ((xVector[1] ~= 0 or yVector[1] ~= 0) and xCollide) then
         screen.player.velocity[1] = 0
@@ -28,6 +38,34 @@ function playerUpdate(screen, dt)
     end
 
     gravity(screen.player, dt)
+
+    screen.player.touchingLadder = staticCollision(screen.player, screen.ladders, dt, true)
+end
+
+-- Function: Apply ladder physics to a screen's player
+-- Arguments:
+--  screen (screen): The screen to apply physics to
+--  dt (number): The delta-time for this frame
+function playerUpdateLadder(screen, dt)
+    local xCollide, xVector, yCollide, yVector = applyPlayerMovementAndCollision(screen, dt)
+    screen.player.grounded = nil
+
+    screen.player.touchingLadder = staticCollision(screen.player, screen.ladders, dt, true)
+    if (not screen.player.touchingLadder) then
+        screen.player.onLadder = false
+    end
+end
+
+-- Function: Apply all physics to player
+-- Arguments:
+--  screen (screen): The screen to apply physics to
+--  dt (number): The delta-time for this frame
+function playerUpdate(screen, dt)
+    if (screen.player.onLadder) then
+        playerUpdateLadder(screen, dt)
+    else
+        playerUpdateStandard(screen, dt)
+    end
 end
 
 -- Function: Apply physics to a screen
