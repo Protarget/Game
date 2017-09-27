@@ -41,17 +41,18 @@ function standardControls(screen, dt)
         screen.player.grounded = nil
     end
 
-    if (love.keyboard.isDown("w") and screen.player.touchingLadder) then
-        screen.player.onLadder = true
-    end
 
     if (love.keyboard.isDown("s") and not screen.player.crouching) then
         screen.player.crouching = true
-        screen.player.boundingBox = screen.player.crouchingBox
     elseif (not love.keyboard.isDown("s") and screen.player.crouching and screen.player.canStand) then
         screen.player.crouching = false
-        screen.player.boundingBox = screen.player.standingBox
     end
+
+    if (love.keyboard.isDown("w") and screen.player.touchingLadder) then
+        screen.player.onLadder = true
+        screen.player.crouching = false
+    end
+
 
     if (not screen.player.grounded) then
         vx = vx * 0.025
@@ -59,7 +60,10 @@ function standardControls(screen, dt)
 
     local maxVel = 17
     if (screen.player.crouching) then
+        screen.player.boundingBox = screen.player.crouchingBox
         maxVel = 8
+    else
+        screen.player.boundingBox = screen.player.standingBox
     end
 
     if (vx == 0 and screen.player.grounded) then
