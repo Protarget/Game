@@ -8,5 +8,5 @@ return function(r)
     local y = r[2]
     local w = rectangle.width(r)
     local h = rectangle.height(r)
-    love.graphics.rectangle("line", x, y, w - 1, h - 1)
+    love.graphics.rectangle("line", x + 1, y + 1, w - 1, h - 1)
 end

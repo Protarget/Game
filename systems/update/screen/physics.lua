@@ -3,6 +3,7 @@
 
 local movement = require("systems/update/screen/physics/movement")
 local staticCollision = require("systems/update/screen/physics/staticCollision")
+local staticBoxTest = require("systems/update/screen/physics/staticBoxTest")
 local gravity = require("systems/update/screen/physics/gravity")
 
 -- Function: Apply the player's movement and collision, but not anything else
@@ -40,6 +41,10 @@ function playerUpdateStandard(screen, dt)
     gravity(screen.player, dt)
 
     screen.player.touchingLadder = staticCollision(screen.player, screen.ladders, dt, true)
+
+    if (screen.player.crouching) then
+        screen.player.canStand = not staticBoxTest(screen.player.standingBox, screen.player.position, screen.staticCollision)
+    end
 end
 
 -- Function: Apply ladder physics to a screen's player

@@ -36,7 +36,7 @@ function standardControls(screen, dt)
         vx = vx + 900
     end
 
-    if (love.keyboard.isDown("w") and screen.player.grounded) then
+    if (love.keyboard.isDown("w") and screen.player.grounded and not screen.player.crouching) then
         screen.player.velocity[2] = -40
         screen.player.grounded = nil
     end
@@ -45,15 +45,28 @@ function standardControls(screen, dt)
         screen.player.onLadder = true
     end
 
+    if (love.keyboard.isDown("s") and not screen.player.crouching) then
+        screen.player.crouching = true
+        screen.player.boundingBox = screen.player.crouchingBox
+    elseif (not love.keyboard.isDown("s") and screen.player.crouching and screen.player.canStand) then
+        screen.player.crouching = false
+        screen.player.boundingBox = screen.player.standingBox
+    end
+
     if (not screen.player.grounded) then
         vx = vx * 0.025
+    end
+
+    local maxVel = 17
+    if (screen.player.crouching) then
+        maxVel = 8
     end
 
     if (vx == 0 and screen.player.grounded) then
         screen.player.velocity[1] = math.decay(screen.player.velocity[1], 75 * dt)
     else
         screen.player.velocity[1] = screen.player.velocity[1] + vx * dt
-        screen.player.velocity[1] = math.clampSigned(screen.player.velocity[1], 17)
+        screen.player.velocity[1] = math.clampSigned(screen.player.velocity[1], maxVel)
     end
 end
 

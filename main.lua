@@ -18,15 +18,22 @@ local testScreen = screen()
 testScreen.staticCollision = {
     {0, 75, 96, 96},
     {75, 0, 96, 96},
-    {60, 50, 70, 60}
+    {60, 50, 70, 60},
+    {60, 67, 70, 75}
 }
 testScreen.ladders = {
-    {30, 0, 40, 100}
+    {30, -5, 40, 75}
 }
 
 local testScreenLeft = screen()
 testScreenLeft.staticCollision = {
-    {0, 75, 96, 96}
+    {0, 75, 96, 96},
+    {40, 30, 60, 40}
+}
+testScreenLeft.ladders = {
+    {45, 40, 55, 75},
+    {55, 40, 70, 50},
+    {60, 20, 70, 40},
 }
 
 local testScreenUp = screen()
